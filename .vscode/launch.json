@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "firefox",
+      "name": "Launch moo!",
+      "request": "launch",
+      "reAttach": true,
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}",
+      "profile": "dev-edition-default",
+      "skipFiles": [
+        "node_modules/**"
+      ]
+    },
+    {
+      "type": "firefox",
+      "name": "Attach to moo!",
+      "request": "attach",
+      "skipFiles": [
+        "node_modules/**"
+      ]
+    }
+  ]
+}

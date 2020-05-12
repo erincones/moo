@@ -1,0 +1,61 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "label": "npm: build",
+      "dependsOn": "npm: clean",
+      "detail": "Compile your application and make it ready for deployment",
+      "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "develop",
+      "label": "npm: develop",
+      "detail": "Start the development server"
+    },
+    {
+      "type": "npm",
+      "script": "format",
+      "label": "npm: format",
+      "detail": "Print code from scratch by taking the line length into account"
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "label": "npm: start",
+      "detail": "Start the development server"
+    },
+    {
+      "type": "npm",
+      "script": "serve",
+      "label": "npm: serve",
+      "dependsOn": "npm: build",
+      "detail": "Serve the production build of your site for testing"
+    },
+    {
+      "type": "npm",
+      "script": "clean",
+      "label": "npm: clean",
+      "detail": "Wipe out the cache (.cache folder) and public directories"
+    },
+    {
+      "type": "npm",
+      "script": "test",
+      "group": "test",
+      "label": "npm: test",
+      "detail": "Write tests! -> https://gatsby.dev/unit-testing"
+    },
+    {
+      "type": "npm",
+      "script": "install",
+      "label": "npm: install",
+      "detail": "Install dependencies from package"
+    }
+  ]
+}
