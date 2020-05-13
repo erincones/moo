@@ -1,3 +1,5 @@
 import React from "react";
 
-export default (): React.ReactElement => <>404 not found</>;
+const HTTP404: React.FC = (): React.ReactElement => <>404 not found</>;
+
+export default HTTP404;
