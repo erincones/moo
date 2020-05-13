@@ -1,0 +1,30 @@
+// Bitstream Vera Sans Mono font face
+@font-face {
+  font-family: Bitstream Vera Sans Mono;
+  src: url(../fonts/ttf-bitstream-vera-1.10/VeraMono.ttf) format("truetype");
+}
+@font-face {
+  font-family: Bitstream Vera Sans Mono;
+  font-style: italic;
+  src: url(../fonts/ttf-bitstream-vera-1.10/VeraMoIt.ttf) format("truetype");
+}
+@font-face {
+  font-family: Bitstream Vera Sans Mono;
+  font-weight: bold;
+  src: url(../fonts/ttf-bitstream-vera-1.10/VeraMoBd.ttf) format("truetype");
+}
+@font-face {
+  font-family: Bitstream Vera Sans Mono;
+  font-weight: bold;
+  font-style: italic;
+  src: url(../fonts/ttf-bitstream-vera-1.10/VeraMoBI.ttf) format("truetype");
+}
+
+// Global style
+html {
+  @apply bg-black;
+  @apply font-mono;
+  @apply text-white;
+  font-size: 16px;
+  line-height: 19px;
+}
