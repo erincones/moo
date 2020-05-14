@@ -1,5 +1,5 @@
 import React from "react";
 
-const Index: React.FC = (): React.ReactElement => <>moo!</>;
+const Home: React.FC = (): React.ReactElement => <>moo!</>;
 
-export default Index;
+export default Home;
