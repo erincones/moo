@@ -1,11 +1,11 @@
 // Base styles
-@import "tailwindcss/base";
+@tailwind base;
 @import "base";
 
 // Components
-@import "tailwindcss/components";
+@tailwind components;
 @import "components";
 
 // Utilites
-@import "tailwindcss/utilities";
+@tailwind utilities;
 @import "utilities";

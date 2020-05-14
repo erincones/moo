@@ -1,0 +1,4 @@
+// Green span selection
+.text-green-500::selection {
+  @apply bg-green-500;
+}
