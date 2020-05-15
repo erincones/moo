@@ -20,11 +20,16 @@
   src: url(../fonts/ttf-bitstream-vera-1.10/VeraMoBI.ttf) format("truetype");
 }
 
+// Default terminal colors
+@mixin terminal {
+  @apply bg-black;
+  @apply text-white;
+}
+
 // Global style
 html {
-  @apply bg-black;
+  @include terminal;
   @apply font-mono;
-  @apply text-white;
   font-size: 16px;
   line-height: 19px;
 }
@@ -33,4 +38,9 @@ html {
 ::selection {
   @apply bg-white;
   @apply text-black;
+}
+
+// Inputamd select style
+input, select {
+  @include terminal;
 }
