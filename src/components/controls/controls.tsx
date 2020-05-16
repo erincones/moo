@@ -76,51 +76,63 @@ export const Controls: React.FC<Props> = ({ options, className, onChange: setOpt
 
 
   return (
-    <div className={className}>
-      <div>
-        <label htmlFor="cow">Cow</label>
-        <div className="block">
-          <select id="cow" value={options?.cow} onChange={handleCow}>
-            <option>Default</option>
-            <option>Turtle</option>
-            <option>Dragon</option>
-          </select>
-          <div className="inline">
+    <div className={`grid row-gap-2 col-gap-4 grid-cols-12 px-4 py-2 ${className}`}>
+      {/* First row */}
+      <fieldset className="col-span-5">
+        <legend>Cow</legend>
+        <select id="cow" value={options?.cow} className="w-full" onChange={handleCow}>
+          <option>Default</option>
+          <option>Turtle</option>
+          <option>Dragon</option>
+        </select>
+      </fieldset>
+      <fieldset className="col-span-7">
+        <legend>Action</legend>
+        <div className="grid gap-1 grid-cols-7">
+          <div className="col-span-3">
+            <span>(</span>
             <input id="say" type="radio" value="say" checked={options?.action === `say`} onChange={handleAction} />
+            <span>)</span>
             <label htmlFor="say">Say</label>
           </div>
-          <div className="inline">
+          <div className="col-span-4">
+            <span>(</span>
             <input id="think" type="radio" value="think" checked={options?.action === `think`} onChange={handleAction} />
+            <span>)</span>
             <label htmlFor="think">Think</label>
           </div>
         </div>
-      </div>
-      <div className="flex">
-        <div className="w-5/12">
-          <label htmlFor="mode">Mode</label>
-          <select id="mode" value={mode} className="block w-full" onChange={handleMode}>
-            { modes }
-          </select>
-        </div>
-        <div className="w-3/12">
-          <label htmlFor="eyes">Eyes</label>
-          <input id="eyes" type="text" value={face.eyes} className="block w-full" onChange={handleEyes} />
-        </div>
-        <div className="w-4/12">
-          <label htmlFor="tongue">Tongue</label>
-          <input id="tongue" type="text" value={face.tongue} className="block w-full" onChange={handleTongue} />
-        </div>
-      </div>
-      <div>
-        <label htmlFor="wrap">Wrap length</label>
-        <div className="flex">
-          <input id="wrap" type="text" value={wrap >= 0 ? wrap : ``} pattern="\d*" inputMode="numeric" className="w-1/2" onChange={handleWrap} disabled={noWrap} />
-          <div className="w-1/2">
+      </fieldset>
+      {/* Second row */}
+      <fieldset className="col-span-5">
+        <legend>Mode</legend>
+        <select id="mode" value={mode} className="w-full" onChange={handleMode}>
+          { modes }
+        </select>
+      </fieldset>
+      <fieldset className="col-span-3">
+        <legend>Eyes</legend>
+        <input type="text" value={face.eyes} className="w-full" onChange={handleEyes} />
+      </fieldset>
+      <fieldset className="col-span-4">
+        <legend>Tongue</legend>
+        <input id="tongue" type="text" value={face.tongue} className="w-full" onChange={handleTongue} />
+      </fieldset>
+      {/* Third row */}
+      <fieldset className="col-span-12">
+        <legend>Wrap length</legend>
+        <div className="grid gap-4 grid-cols-12">
+          <div className="col-span-5 pr-2">
+            <input id="wrap" type="text" value={wrap >= 0 ? wrap : ``} pattern="\d*" inputMode="numeric" className="w-full" onChange={handleWrap} disabled={noWrap} />
+          </div>
+          <div className="col-span-7 pl-2">
+            <span>[</span>
             <input id="nowrap" type="checkbox" checked={noWrap} onChange={handleWrap} />
+            <span>]</span>
             <label htmlFor="nowrap">No wrap</label>
           </div>
         </div>
-      </div>
+      </fieldset>
     </div>
   );
 };

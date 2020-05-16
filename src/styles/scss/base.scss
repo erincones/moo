@@ -26,21 +26,98 @@
   @apply text-white;
 }
 
+// Default selection
+@mixin selection {
+  @apply bg-white;
+  @apply text-black;
+}
+
 // Global style
 html {
   @include terminal;
   @apply font-mono;
   font-size: 16px;
-  line-height: 19px;
+  line-height: 1em;
 }
 
-// Default selection
+// Global selection
 ::selection {
-  @apply bg-white;
-  @apply text-black;
+  @include selection;
+}
+
+// Fieldsets
+fieldset {
+  @apply border;
+  @apply border-white;
+  @apply px-2;
+  @apply pb-2;
+}
+legend {
+  @apply px-1;
+  @apply z-10;
+  @apply relative;
 }
 
 // Inputamd select style
 input, select {
   @include terminal;
+  @apply appearance-none;
+}
+
+// Custom radio button and checkbox
+input[ type = radio ]::before,
+input[ type = checkbox ]::before {
+  content: " ";
+  @apply cursor-pointer;
+  @apply whitespace-pre;
+}
+
+// Checked radio button and checkbox
+input[ type = radio ]:checked::before {
+  content: "*";
+}
+input[ type = checkbox ]:checked::before {
+  content: "x";
+}
+
+// Focused and active radio and checkbox
+select:-moz-focusring,
+input[ type = radio ]:focus::before,
+input[ type = radio ]:active::before,
+input[ type = radio ]:-moz-focusring,
+input[ type = checkbox ]:focus::before,
+input[ type = checkbox ]:active::before,
+input[ type = checkbox ]:-moz-focusring {
+  @include selection;
+  @apply font-bold;
+  @apply outline-none;
+  @apply border-0;
+}
+
+// Arrows
+$double-arrow-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='12'%3E%3Cpath d='M0 5H9L5 0Z' fill='black'/%3E%3Cpath d='M0 7H9L5 12Z' fill='black'/%3E%3C/svg%3E%0A");
+$double-arrow-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='12'%3E%3Cpath d='M0 5H9L5 0Z' fill='white'/%3E%3Cpath d='M0 7H9L5 12Z' fill='white'/%3E%3C/svg%3E%0A");
+
+@mixin bg-icon-right($icon) {
+  background-image: $icon;
+  background-repeat: no-repeat;
+  background-position-x: right;
+  background-position-y: center;
+}
+
+
+// Remove implicit select left padding and add arrow
+select {
+  text-indent: -0.15em;
+  @include bg-icon-right($double-arrow-white);
+  @apply align-text-bottom;
+}
+
+// Focused select
+select:focus,
+select:-moz-focusring {
+  @apply outline-none;
+  @apply text-transparent;
+  text-shadow: 0 0 0 theme("colors.black");
+  @include bg-icon-right($double-arrow-black);
 }
