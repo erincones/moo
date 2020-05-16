@@ -105,10 +105,9 @@ $double-arrow-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/200
   background-position-y: center;
 }
 
-
 // Remove implicit select left padding and add arrow
 select {
-  text-indent: -0.15em;
+  text-indent: -2px;
   @include bg-icon-right($double-arrow-white);
   @apply align-text-bottom;
 }
