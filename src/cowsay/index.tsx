@@ -88,4 +88,4 @@ export const getMode = ({ eyes, tongue }: Face): ModeID | undefined => {
   }
 
   return undefined;
-}
+};

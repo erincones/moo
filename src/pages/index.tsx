@@ -10,9 +10,9 @@ const Home: React.FC = (): JSX.Element => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row-reverse">
-      <Controls options={options} className="md:w-3/12" onChange={handleOptions} />
-      <div className="md:w-9/12"></div>
+    <div className="grid grid-flow-col md:grid-cols-12">
+      <Controls options={options} className="w-full md:col-start-8 md:col-span-5" onChange={handleOptions} />
+      <div className="w-full md:col-start-1 md:col-span-7"></div>
     </div>
   );
 };
