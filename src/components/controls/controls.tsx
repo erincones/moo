@@ -1,42 +1,22 @@
 import React, { useState, useRef } from "react";
-import { CowOptions, Face, appearances, getFace, getMode } from "../../cowsay";
+import { Mode, getMode, getFace, modes } from "./modes";
+import { ClassName } from "../types";
+import { Options, Face } from "../cow";
 
-interface Props {
-  options: Readonly<CowOptions>;
-  className?: string;
-  onChange: (value: CowOptions) => void;
+interface Props extends ClassName {
+  readonly options: Options;
+  readonly onChange: (value: Options) => void;
 };
 
-interface InputEvent extends Event {
-  data: string;
-}
-
-const modes = [
-  <option key="c" value="c" hidden disabled>Custom</option>,
-  <option key="u" value="u">Default</option>,
-  ...appearances.map(({ id, name }) =>
-    <option key={id} value={id}>{name[0].toUpperCase() + name.slice(1)}</option>
-  )
-];
-
-const getCowMode = ({ eyes, tongue }: Face): string => {
-  if ((eyes === `oo`) && !tongue?.trim().length) {
-    return `u`;
-  }
-
-  const mode = getMode({ eyes, tongue });
-  return mode ? mode : `c`;
-}
-
-export const Controls: React.FC<Props> = ({ options, className, onChange: setOptions }: Props): JSX.Element => {
+export const Controls = ({ options, className, onChange: setOptions }: Props): JSX.Element => {
   const [ wrap, setWrap ] = useState(String(options.wrap || ``));
   const sayRef = useRef<HTMLInputElement | null>(null);
   const thinkRef = useRef<HTMLInputElement | null>(null);
   const noWrapRef = useRef<HTMLInputElement | null>(null);
   const noWrap = options?.wrap === false;
 
-  const face: Readonly<Face> = { eyes: options.eyes, tongue: options.tongue };
-  const mode = getCowMode(face);
+  const face: Face = { eyes: options.eyes, tongue: options.tongue };
+  const mode = getMode(face);
 
 
   const handleCow = (e: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -54,12 +34,7 @@ export const Controls: React.FC<Props> = ({ options, className, onChange: setOpt
   };
 
   const handleMode = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    const unknowns = [ `u`, `c` ];
-    const mode = unknowns.includes(e.target.value) ? undefined : e.target.value;
-
-    // eslint-disable-next-line
-    // @ts-ignore
-    setOptions({ ...options, mode, ...getFace(mode) });
+    setOptions({ ...options, ...getFace(e.target.value as Mode) });
   };
 
   const handleEyes = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -113,7 +88,7 @@ export const Controls: React.FC<Props> = ({ options, className, onChange: setOpt
   const supress = (e: React.SyntheticEvent): void => e.preventDefault();
 
   return (
-    <div className={`grid row-gap-2 col-gap-4 grid-cols-12 px-4 py-2 ${className}`}>
+    <div className={`grid row-gap-2 col-gap-4 grid-cols-12 leading-none p-2 ${className}`}>
       {/* First row */}
       <fieldset className="col-span-5">
         <legend>Cow</legend>

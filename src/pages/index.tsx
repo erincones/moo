@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Controls } from "../components/controls";
-import { CowOptions, defaultCow } from "../cowsay";
+import { Terminal } from "../components/terminal";
+import { Options, defaults } from "../components/cow";
 
-const Home: React.FC = (): JSX.Element => {
-  const [ options, setOptions ] = useState(defaultCow);
+const Home = (): JSX.Element => {
+  const [ options, setOptions ] = useState(defaults);
 
-  const handleOptions = (value: CowOptions): void => {
-    setOptions(value);
-  }
+  const handleOptions = (value: Options): void => setOptions(value);
 
   return (
-    <div className="grid grid-flow-col md:grid-cols-12">
+    <div className="grid grid-flow-row md:grid-flow-col md:grid-cols-12">
       <Controls options={options} className="w-full md:col-start-8 md:col-span-5" onChange={handleOptions} />
-      <div className="w-full md:col-start-1 md:col-span-7"></div>
+      <Terminal options={options} className="w-full md:col-start-1 md:col-span-7" />
     </div>
   );
 };
