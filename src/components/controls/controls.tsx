@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
+import { Checkable } from "./checkable";
 import { Mode, getMode, getFace, modes } from "./modes";
 import { ClassName } from "../types";
 import { Options, Face } from "../cow";
@@ -10,26 +11,20 @@ interface Props extends ClassName {
 
 export const Controls = ({ options, className, onChange: setOptions }: Props): JSX.Element => {
   const [ wrap, setWrap ] = useState(String(options.wrap || ``));
-  const sayRef = useRef<HTMLInputElement | null>(null);
-  const thinkRef = useRef<HTMLInputElement | null>(null);
-  const noWrapRef = useRef<HTMLInputElement | null>(null);
   const noWrap = options?.wrap === false;
 
   const face: Face = { eyes: options.eyes, tongue: options.tongue };
   const mode = getMode(face);
-
 
   const handleCow = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     setOptions({ ...options, cow: e.target.value });
   };
 
   const handleSay = (): void => {
-    sayRef.current?.focus();
     setOptions({ ...options, action: `say` });
   };
 
   const handleThink = (): void => {
-    thinkRef.current?.focus();
     setOptions({ ...options, action: `think` });
   };
 
@@ -80,12 +75,9 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
     }
   };
 
-  const togleNoWrap = (): void => {
-    noWrapRef.current?.focus();
+  const toggleNoWrap = (): void => {
     setOptions({ ...options, wrap: noWrap ? parseInt(wrap) : false });
   };
-
-  const supress = (e: React.SyntheticEvent): void => e.preventDefault();
 
   return (
     <div className={`grid row-gap-2 col-gap-4 grid-cols-12 leading-none p-2 ${className}`}>
@@ -102,15 +94,11 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
         <legend>Action</legend>
         <div className="grid gap-1 grid-cols-7">
           <div className="col-span-3">
-            <span className="cursor-pointer" onClick={handleSay} onMouseDown={supress}>(</span>
-            <input ref={sayRef} id="say" type="radio" value="say" checked={options?.action === `say`} onChange={handleSay} />
-            <span className="cursor-pointer" onClick={handleSay} onMouseDown={supress}>)</span>
+            <Checkable id="say" exclusive checked={options?.action === `say`} onChange={handleSay} />
             <label htmlFor="say" className="cursor-pointer">Say</label>
           </div>
           <div className="col-span-4">
-            <span className="cursor-pointer" onClick={handleThink} onMouseDown={supress}>(</span>
-            <input ref={thinkRef} id="think" type="radio" value="think" checked={options?.action === `think`} onChange={handleThink} />
-            <span className="cursor-pointer" onClick={handleThink} onMouseDown={supress}>)</span>
+            <Checkable id="think" exclusive checked={options?.action === `think`} onChange={handleThink} />
             <label htmlFor="think" className="cursor-pointer">Think</label>
           </div>
         </div>
@@ -138,9 +126,7 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
             <input id="wrap" type="number" value={wrap} inputMode="numeric" className="w-full"  onKeyDown={inputWrap} onPaste={pasteWrap} onChange={handleWrap} disabled={noWrap} />
           </div>
           <div className="col-span-7 pl-2">
-            <span className="cursor-pointer" onClick={togleNoWrap} onMouseDown={supress}>[</span>
-            <input ref={noWrapRef} id="nowrap" type="checkbox" checked={noWrap} onChange={togleNoWrap} />
-            <span className="cursor-pointer" onClick={togleNoWrap} onMouseDown={supress}>]</span>
+            <Checkable id="nowrap" checked={noWrap} onChange={toggleNoWrap} />
             <label htmlFor="nowrap" className="cursor-pointer">No wrap</label>
           </div>
         </div>

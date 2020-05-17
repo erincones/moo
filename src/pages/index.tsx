@@ -10,8 +10,8 @@ const Home = (): JSX.Element => {
 
   return (
     <div className="grid grid-flow-row md:grid-flow-col md:grid-cols-12">
-      <Controls options={options} className="w-full md:col-start-8 md:col-span-5" onChange={handleOptions} />
-      <Terminal options={options} className="w-full md:col-start-1 md:col-span-7" />
+      <Controls options={options} className="md:col-start-8 md:col-span-5" onChange={handleOptions} />
+      <Terminal options={options} className="md:col-start-1 md:col-span-7" />
     </div>
   );
 };

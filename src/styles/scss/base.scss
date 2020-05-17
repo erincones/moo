@@ -58,7 +58,7 @@ legend {
   @apply relative;
 }
 
-// Inputamd select style
+// Inputa and select style
 input, select {
   @include terminal;
   @apply appearance-none;
@@ -82,11 +82,11 @@ input[ type = checkbox ]:checked::before {
 
 // Focused and active radio and checkbox
 select:-moz-focusring,
-input[ type = radio ]:focus::before,
-input[ type = radio ]:active::before,
+input[ type = radio ]:focus,
+input[ type = radio ]:active,
 input[ type = radio ]:-moz-focusring,
-input[ type = checkbox ]:focus::before,
-input[ type = checkbox ]:active::before,
+input[ type = checkbox ]:focus,
+input[ type = checkbox ]:active,
 input[ type = checkbox ]:-moz-focusring {
   @include selection;
   @apply font-bold;
