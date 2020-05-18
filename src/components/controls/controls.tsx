@@ -10,7 +10,7 @@ interface Props extends ClassName {
   readonly onChange: (value: Options) => void;
 };
 
-export const Controls = ({ options, className, onChange: setOptions }: Props): JSX.Element => {
+export const Controls = ({ options, className = ``, onChange: setOptions }: Props): JSX.Element => {
   const [ wrap, setWrap ] = useState(String(options.wrap || ``));
   const noWrap = options?.wrap === false;
 
@@ -67,7 +67,7 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
   };
 
   return (
-    <div className={`grid row-gap-2 col-gap-4 grid-cols-12 leading-none p-2 ${className}`}>
+    <div className={`grid row-gap-2 col-gap-4 grid-cols-12 leading-none p-2 ${className && (` ` + className)}`}>
       {/* First row */}
       <fieldset className="col-span-5">
         <legend>Cow</legend>

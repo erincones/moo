@@ -58,22 +58,13 @@ legend {
   @apply relative;
 }
 
-// Inputa and select style
+// Input and select style
 input, select {
   @include terminal;
   @apply appearance-none;
 }
 
-// Hide number input arrows
-input[ type = number ] {
-  appearance: textfield;
-}
-input[ type = number ]::-webkit-inner-spin-button,
-input[ type = number ]::-webkit-outer-spin-button {
-  @apply appearance-none;
-  @apply m-0;
-}
-
+// Disabled input
 input:disabled {
   @apply text-gray;
 }

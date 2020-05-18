@@ -10,7 +10,7 @@ interface Props extends ClassName {
 
 const dummy = (): void => { return; };
 
-export const Spinbox = ({ value, className, disabled, onUpdate: setValue = dummy, onChange: handleChange }: Props): JSX.Element => {
+export const Spinbox = ({ value, className = ``, disabled, onUpdate: setValue = dummy, onChange: handleChange }: Props): JSX.Element => {
   const stepUp = (): void => {
     setValue(value ? parseInt(value) + 1 : 1);
   }
@@ -35,11 +35,11 @@ export const Spinbox = ({ value, className, disabled, onUpdate: setValue = dummy
   };
 
   return (
-    <span className={`grid grid-flow-col ${className}`}>
-      <input type="text" value={value} inputMode="numeric" className="w-full" disabled={disabled} onKeyDown={handleKeyDown} onChange={handleChange} />
+    <span className={`flex${className && (` ` + className)}`}>
+      <input type="text" value={value} inputMode="numeric" className="min-w-0 flex-grow" disabled={disabled} onKeyDown={handleKeyDown} onChange={handleChange} />
       <div>
-        <button className="block w-char up-arrow-white focus:up-arrow-black focus:bg-white focus:outline-none leading-half h-2" disabled={disabled} onClick={stepUp} />
-        <button className="block w-char down-arrow-white focus:down-arrow-black focus:bg-white focus:outline-none leading-half h-2" disabled={disabled} onClick={stepDown} />
+        <button className="block up-arrow-white focus:up-arrow-black focus:bg-white focus:outline-none leading-half w-4 h-2" disabled={disabled} onClick={stepUp} />
+        <button className="block down-arrow-white focus:down-arrow-black focus:bg-white focus:outline-none leading-half w-4 h-2" disabled={disabled} onClick={stepDown} />
       </div>
     </span>
   );
