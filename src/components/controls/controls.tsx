@@ -41,20 +41,13 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
     setOptions({ ...options, tongue: e.target.value.slice(0, 2) });
   };
 
-  const stepUpWrap = (): void => {
-    const value = options.wrap ? options.wrap + 1 : 1;
-    setWrap(String(value));
-    setOptions({ ...options, wrap: value });
-  }
-
-  const stepDownWrap = (): void => {
-    const value = options.wrap && (options.wrap > 0) ? options.wrap - 1 : 0;
+  const handleUpdateWrap = (value: number): void => {
     setWrap(String(value));
     setOptions({ ...options, wrap: value });
   }
 
   const handleWrap = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (!e.target.validity.valid) {
+    if (!/^\d*$|^0x[\dA-Fa-f]+$/.test(e.target.value)) {
       return;
     }
 
@@ -70,7 +63,7 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
   };
 
   const toggleNoWrap = (): void => {
-    setOptions({ ...options, wrap: noWrap ? parseInt(wrap) : false });
+    setOptions({ ...options, wrap: noWrap ? parseInt(wrap) || undefined : false });
   };
 
   return (
@@ -117,7 +110,7 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
         <legend>Wrap length</legend>
         <div className="grid gap-4 grid-cols-12">
           <div className="col-span-5 pr-2">
-            <Spinbox value={wrap} disabled={noWrap} onStepUp={stepUpWrap} onStepDown={stepDownWrap} onChange={handleWrap} />
+            <Spinbox value={wrap} disabled={noWrap} onUpdate={handleUpdateWrap} onChange={handleWrap} />
           </div>
           <div className="col-span-7 pl-2">
             <Checkable id="nowrap" checked={noWrap} onChange={toggleNoWrap} />
