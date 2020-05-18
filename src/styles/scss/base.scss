@@ -64,6 +64,20 @@ input, select {
   @apply appearance-none;
 }
 
+// Hide number input arrows
+input[ type = number ] {
+  appearance: textfield;
+}
+input[ type = number ]::-webkit-inner-spin-button,
+input[ type = number ]::-webkit-outer-spin-button {
+  @apply appearance-none;
+  @apply m-0;
+}
+
+input:disabled {
+  @apply text-gray;
+}
+
 // Custom radio button and checkbox
 input[ type = radio ]::before,
 input[ type = checkbox ]::before {
@@ -80,43 +94,18 @@ input[ type = checkbox ]:checked::before {
   content: "x";
 }
 
-// Focused and active radio and checkbox
-select:-moz-focusring,
-input[ type = radio ]:focus,
-input[ type = radio ]:active,
-input[ type = radio ]:-moz-focusring,
-input[ type = checkbox ]:focus,
-input[ type = checkbox ]:active,
-input[ type = checkbox ]:-moz-focusring {
-  @include selection;
-  @apply font-bold;
-  @apply outline-none;
-  @apply border-0;
-}
-
-// Arrows
-$double-arrow-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='12'%3E%3Cpath d='M0 5H9L5 0Z' fill='black'/%3E%3Cpath d='M0 7H9L5 12Z' fill='black'/%3E%3C/svg%3E%0A");
-$double-arrow-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='12'%3E%3Cpath d='M0 5H9L5 0Z' fill='white'/%3E%3Cpath d='M0 7H9L5 12Z' fill='white'/%3E%3C/svg%3E%0A");
-
-@mixin bg-icon-right($icon) {
-  background-image: $icon;
-  background-repeat: no-repeat;
-  background-position-x: right;
-  background-position-y: center;
-}
-
-// Remove implicit select left padding and add arrow
+// Remove implicit select left padding
 select {
   text-indent: -2px;
-  @include bg-icon-right($double-arrow-white);
   @apply align-text-bottom;
 }
 
-// Focused select
-select:focus,
-select:-moz-focusring {
-  @apply outline-none;
-  @apply text-transparent;
-  text-shadow: 0 0 0 theme("colors.black");
-  @include bg-icon-right($double-arrow-black);
+// Hide button overflow
+button {
+  @apply overflow-hidden;
+}
+
+// Normal cursor for disabled button
+button:disabled {
+  @apply cursor-default;
 }

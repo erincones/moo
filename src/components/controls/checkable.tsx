@@ -25,7 +25,7 @@ export const Checkable = ({ id, exclusive, checked, className, onChange: handleC
   return (
     <span className={className}>
       <span className="cursor-pointer" onClick={handleInput} onMouseDown={focus}>{open}</span>
-      <input ref={input} id={id} type={type} checked={checked} onChange={handleChange} />
+      <input ref={input} id={id} type={type} checked={checked} className="focus:bg-white focus:text-black focus:font-bold focus:outline-none" onChange={handleChange} />
       <span className="cursor-pointer" onClick={handleInput} onMouseDown={focus}>{close}</span>
     </span>
   );

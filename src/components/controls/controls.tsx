@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Checkable } from "./checkable";
+import { Spinbox } from "./spinbox";
 import { Mode, getMode, getFace, modes } from "./modes";
 import { ClassName } from "../types";
 import { Options, Face } from "../cow";
@@ -40,23 +41,16 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
     setOptions({ ...options, tongue: e.target.value.slice(0, 2) });
   };
 
-  const inputWrap = (e: React.KeyboardEvent): void => {
-    if (e.altKey || e.ctrlKey || e.shiftKey || e.metaKey || e.key.length > 1) {
-      return;
-    }
-
-    if (!/\d/.test(e.key)) {
-      e.preventDefault();
-    }
+  const stepUpWrap = (): void => {
+    const value = options.wrap ? options.wrap + 1 : 1;
+    setWrap(String(value));
+    setOptions({ ...options, wrap: value });
   }
 
-  const pasteWrap = (e: React.ClipboardEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-
-    const number = parseInt(e.clipboardData.getData(`text`));
-    if (!Number.isNaN(number)) {
-      e.currentTarget.value = String(number);
-    }
+  const stepDownWrap = (): void => {
+    const value = options.wrap && (options.wrap > 0) ? options.wrap - 1 : 0;
+    setWrap(String(value));
+    setOptions({ ...options, wrap: value });
   }
 
   const handleWrap = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -84,7 +78,7 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
       {/* First row */}
       <fieldset className="col-span-5">
         <legend>Cow</legend>
-        <select id="cow" value={options?.cow} className="w-full" onChange={handleCow}>
+        <select value={options?.cow} className="w-full arrows-white focus:arrows-black focus:bg-white focus:text-black focus:outline-none focus:no-focusring" onChange={handleCow}>
           <option>Default</option>
           <option>Turtle</option>
           <option>Dragon</option>
@@ -106,7 +100,7 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
       {/* Second row */}
       <fieldset className="col-span-5">
         <legend>Mode</legend>
-        <select id="mode" value={mode} className="w-full" onChange={handleMode}>
+        <select value={mode} className="w-full arrows-white focus:arrows-black focus:bg-white focus:text-black focus:outline-none focus:no-focusring" onChange={handleMode}>
           {modes}
         </select>
       </fieldset>
@@ -116,14 +110,14 @@ export const Controls = ({ options, className, onChange: setOptions }: Props): J
       </fieldset>
       <fieldset className="col-span-4">
         <legend>Tongue</legend>
-        <input id="tongue" type="text" value={face.tongue} className="w-full" onChange={handleTongue} />
+        <input type="text" value={face.tongue} className="w-full" onChange={handleTongue} />
       </fieldset>
       {/* Third row */}
       <fieldset className="col-span-12">
         <legend>Wrap length</legend>
         <div className="grid gap-4 grid-cols-12">
           <div className="col-span-5 pr-2">
-            <input id="wrap" type="number" value={wrap} inputMode="numeric" className="w-full"  onKeyDown={inputWrap} onPaste={pasteWrap} onChange={handleWrap} disabled={noWrap} />
+            <Spinbox value={wrap} disabled={noWrap} onStepUp={stepUpWrap} onStepDown={stepDownWrap} onChange={handleWrap} />
           </div>
           <div className="col-span-7 pl-2">
             <Checkable id="nowrap" checked={noWrap} onChange={toggleNoWrap} />

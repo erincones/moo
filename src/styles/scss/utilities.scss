@@ -1,4 +1,63 @@
-// Green span selection
-.text-green-500::selection {
-  @apply bg-green-500;
+// Arrow icons
+$arrows-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='12'%3E%3Cpath d='M0 5H9L5 0Z' fill='%23000000'/%3E%3Cpath d='M0 7H9L5 12Z' fill='%23000000'/%3E%3C/svg%3E");
+$arrows-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='12'%3E%3Cpath d='M0 5H9L5 0Z' fill='%23FFFFFF'/%3E%3Cpath d='M0 7H9L5 12Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
+$up-arrow-black: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='9'  height='6'><path d='M0 6H9L5 1Z' fill='%23000000'/></svg>");
+$up-arrow-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9'  height='6'%3E%3Cpath d='M0 6H9L5 1Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
+$up-arrow-gray: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9'  height='6'%3E%3Cpath d='M0 6H9L5 1Z' fill='%23AAAAAA'/%3E%3C/svg%3E");
+$down-arrow-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9'  height='6'%3E%3Cpath d='M0 0H9L5 5Z' fill='%23000000'/%3E%3C/svg%3E");
+$down-arrow-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9'  height='6'%3E%3Cpath d='M0 0H9L5 5Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
+$down-arrow-gray: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9'  height='6'%3E%3Cpath d='M0 0H9L5 5Z' fill='%23AAAAAA'/%3E%3C/svg%3E");
+
+// Arrow icon mixin
+@mixin arrow($icon, $x, $y) {
+  background-image: $icon;
+  background-repeat: no-repeat;
+  background-position-x: $x;
+  background-position-y: $y;
+}
+
+// White arrows
+.arrows-white {
+  @include arrow($arrows-white, right, center);
+}
+.up-arrow-white {
+  @include arrow($up-arrow-white, center, center);
+}
+.down-arrow-white {
+  @include arrow($down-arrow-white, center, center);
+}
+
+// Disabled arrows
+.up-arrow-white:disabled {
+  background-image: $up-arrow-gray;
+}
+.down-arrow-white:disabled {
+  background-image: $down-arrow-gray;
+}
+
+// Focused arrows and misc
+@variants focus {
+  .no-focusring {
+    @apply text-transparent;
+    text-shadow: 0 0 0 theme("colors.black");
+  }
+  .arrows-black {
+    background-image: $arrows-black;
+  }
+  .up-arrow-black {
+    background-image: $up-arrow-black;
+  }
+  .down-arrow-black {
+    background-image: $down-arrow-black;
+  }
+}
+
+// Half size line height
+.leading-half {
+  line-height: 0.5em;
+}
+
+// Real character width
+.w-char {
+  width: 11px;
 }
