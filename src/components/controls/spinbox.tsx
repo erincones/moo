@@ -1,22 +1,19 @@
 import React from "react";
-import { ClassName } from "../types";
+import { ClassName, mergeClasses, dummy } from "../shared";
 
 interface Props extends ClassName {
-  value?: string;
-  onUpdate?: (value: number) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: number;
+  onChange?: (value: number) => void;
   disabled?: boolean;
 }
 
-const dummy = (): void => { return; };
-
-export const Spinbox = ({ value, className = ``, disabled, onUpdate: setValue = dummy, onChange: handleChange }: Props): JSX.Element => {
+export const Spinbox = ({ value, className = ``, disabled, onChange: setValue = dummy }: Props): JSX.Element => {
   const stepUp = (): void => {
-    setValue(value ? parseInt(value) + 1 : 1);
+    setValue(value ? value + 1 : 1);
   }
 
   const stepDown = (): void => {
-    setValue(value && (value !== `0`) ? parseInt(value) - 1 : 0);
+    setValue(value && (value !== 0) ? value - 1 : 0);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -34,8 +31,19 @@ export const Spinbox = ({ value, className = ``, disabled, onUpdate: setValue = 
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (!/^\d*$|^0x[\dA-Fa-f]+$/.test(e.target.value)) {
+      return;
+    }
+
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && (value >= 0)) {
+      setValue(value);
+    }
+  };
+
   return (
-    <span className={`flex${className && (` ` + className)}`}>
+    <span className={mergeClasses(`flex`, className)}>
       <input type="text" value={value} inputMode="numeric" className="min-w-0 flex-grow" disabled={disabled} onKeyDown={handleKeyDown} onChange={handleChange} />
       <div>
         <button className="block up-arrow-white focus:up-arrow-black focus:bg-white focus:outline-none leading-half w-4 h-2" disabled={disabled} onClick={stepUp} />

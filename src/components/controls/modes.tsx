@@ -1,10 +1,14 @@
 import React from "react";
-import { Face } from "../cow";
 
-type Mode = `u` | `c` | `b` | `d` | `g` | `p` | `s` | `t` | `w` | `y`;
+type Mode = `b` | `d` | `g` | `p` | `s` | `t` | `w` | `y` | undefined;
+
+interface Face {
+  readonly eyes: string;
+  readonly tongue: string;
+}
 
 interface Appearance extends Face {
-  readonly id: Mode;
+  readonly id: Mode | `u`;
   readonly name: string;
 }
 
@@ -25,9 +29,9 @@ const defaultFace: Face = {
   tongue: appearances[0].tongue
 };
 
-export { Mode };
+export type { Mode };
 
-export const getMode = ({ eyes, tongue }: Face): Mode => {
+export const getMode = ({ eyes, tongue }: Face): Mode | `u` | `c` => {
   tongue = tongue?.trim() || ``;
 
   for (const face of appearances) {

@@ -1,77 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Checkable } from "./checkable";
 import { Spinbox } from "./spinbox";
 import { Mode, getMode, getFace, modes } from "./modes";
-import { ClassName } from "../types";
-import { Options, Face } from "../cow";
+import { ClassName, mergeClasses, dummy } from "../shared";
 
 interface Props extends ClassName {
-  readonly options: Options;
-  readonly onChange: (value: Options) => void;
+  readonly onChange: (value: string) => void;
 };
 
-export const Controls = ({ options, className = ``, onChange: setOptions }: Props): JSX.Element => {
-  const [ wrap, setWrap ] = useState(String(options.wrap || ``));
-  const noWrap = options?.wrap === false;
+type action = `say` | `think`;
 
-  const face: Face = { eyes: options.eyes, tongue: options.tongue };
-  const mode = getMode(face);
+
+
+export const Controls = ({ className = ``, onChange: changeValue = dummy }: Props): JSX.Element => {
+  const [ message, setMessage ] = useState(`moo!`);
+  const [ cow, setCow ] = useState<string>();
+  const [ action, setAction ] = useState<action>(`say`);
+  const [ mode, setMode ] = useState<Mode | `u` | `c`>();
+  const [ eyes, setEyes ] = useState(`oo`);
+  const [ tongue, setTongue ] = useState(``);
+  const [ wrap, setWrap ] = useState(40);
+  const [ noWrap, setNoWrap ] = useState(false);
+
+  useEffect(() => {
+    changeValue(JSON.stringify({ message, cow, action, mode, eyes, tongue, wrap, noWrap }, null, 2));
+  });
+
+  const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setMessage(e.target.value);
+  }
 
   const handleCow = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setOptions({ ...options, cow: e.target.value });
+    setCow(e.target.value);
   };
 
   const handleSay = (): void => {
-    setOptions({ ...options, action: `say` });
+    setAction(`say`);
   };
 
   const handleThink = (): void => {
-    setOptions({ ...options, action: `think` });
+    setAction(`think`);
   };
 
   const handleMode = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setOptions({ ...options, ...getFace(e.target.value as Mode) });
+    const { eyes, tongue } = getFace(e.target.value as Mode);
+    setEyes(eyes);
+    setTongue(tongue);
+    setMode(e.target.value as Mode);
   };
 
   const handleEyes = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setOptions({ ...options, eyes: e.target.value.slice(0, 2) });
+    const mode = getMode({ eyes: e.target.value, tongue });
+    setEyes(e.target.value);
+    setMode(mode);
   };
 
   const handleTongue = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setOptions({ ...options, tongue: e.target.value.slice(0, 2) });
+    const mode = getMode({ eyes, tongue: e.target.value });
+    setTongue(e.target.value);
+    setMode(mode);
   };
 
-  const handleUpdateWrap = (value: number): void => {
-    setWrap(String(value));
-    setOptions({ ...options, wrap: value });
+  const handleNoWrap = (): void => {
+    setNoWrap(!noWrap);
   }
 
-  const handleWrap = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (!/^\d*$|^0x[\dA-Fa-f]+$/.test(e.target.value)) {
-      return;
-    }
-
-    const value = parseInt(e.target.value);
-    if (value >= 0) {
-      setWrap(String(value));
-      setOptions({ ...options, wrap: value });
-    }
-    else if (!e.target.value.length) {
-      setWrap(``);
-      setOptions({ ...options, wrap: undefined });
-    }
-  };
-
-  const toggleNoWrap = (): void => {
-    setOptions({ ...options, wrap: noWrap ? parseInt(wrap) || undefined : false });
-  };
-
   return (
-    <div className={`grid row-gap-2 col-gap-4 grid-cols-12 leading-none p-2 ${className && (` ` + className)}`}>
+    <div className={mergeClasses(`grid row-gap-2 col-gap-4 grid-cols-12 leading-none p-2`, className)}>
       {/* First row */}
       <fieldset className="col-span-5">
         <legend>Cow</legend>
-        <select value={options?.cow} className="w-full arrows-white focus:arrows-black focus:bg-white focus:text-black focus:outline-none focus:no-focusring" onChange={handleCow}>
+        <select value={cow} className="w-full arrows-white focus:arrows-black focus:bg-white focus:text-black focus:outline-none focus:no-focusring" onChange={handleCow}>
           <option>Default</option>
           <option>Turtle</option>
           <option>Dragon</option>
@@ -81,11 +80,11 @@ export const Controls = ({ options, className = ``, onChange: setOptions }: Prop
         <legend>Action</legend>
         <div className="grid gap-1 grid-cols-7">
           <div className="col-span-3">
-            <Checkable id="say" exclusive checked={options?.action === `say`} onChange={handleSay} />
+            <Checkable id="say" exclusive checked={action === `say`} onChange={handleSay} />
             <label htmlFor="say" className="cursor-pointer">Say</label>
           </div>
           <div className="col-span-4">
-            <Checkable id="think" exclusive checked={options?.action === `think`} onChange={handleThink} />
+            <Checkable id="think" exclusive checked={action === `think`} onChange={handleThink} />
             <label htmlFor="think" className="cursor-pointer">Think</label>
           </div>
         </div>
@@ -99,24 +98,29 @@ export const Controls = ({ options, className = ``, onChange: setOptions }: Prop
       </fieldset>
       <fieldset className="col-span-3">
         <legend>Eyes</legend>
-        <input type="text" value={face.eyes} className="w-full" onChange={handleEyes} />
+        <input type="text" value={eyes} className="w-full" onChange={handleEyes} />
       </fieldset>
       <fieldset className="col-span-4">
         <legend>Tongue</legend>
-        <input type="text" value={face.tongue} className="w-full" onChange={handleTongue} />
+        <input type="text" value={tongue} className="w-full" onChange={handleTongue} />
       </fieldset>
       {/* Third row */}
       <fieldset className="col-span-12">
         <legend>Wrap length</legend>
         <div className="grid gap-4 grid-cols-12">
           <div className="col-span-5 pr-2">
-            <Spinbox value={wrap} disabled={noWrap} onUpdate={handleUpdateWrap} onChange={handleWrap} />
+            <Spinbox value={wrap} disabled={noWrap} onChange={setWrap} />
           </div>
           <div className="col-span-7 pl-2">
-            <Checkable id="nowrap" checked={noWrap} onChange={toggleNoWrap} />
+            <Checkable id="nowrap" checked={noWrap} onChange={handleNoWrap} />
             <label htmlFor="nowrap" className="cursor-pointer">No wrap</label>
           </div>
         </div>
+      </fieldset>
+      {/* Fourth row */}
+      <fieldset className="col-span-12">
+        <legend>Message</legend>
+        <textarea value={message} spellCheck={false} className="bg-black w-full min-h-2 resize-y" onChange={handleMessage} />
       </fieldset>
     </div>
   );

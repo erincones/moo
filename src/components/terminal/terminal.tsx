@@ -1,15 +1,14 @@
 import React from "react";
-import { ClassName } from "../types";
-import { Cow, Options } from "../cow";
 import { Prompt } from "./prompt";
+import { ClassName, mergeClasses } from "../shared";
 
 interface Props extends ClassName {
-  readonly options?: Options;
+  readonly output?: string;
 }
 
-export const Terminal = ({ options, className }: Props): JSX.Element => (
-  <div className={`px-px${className && (` ` + className)}`}>
-    <Cow {...options} />
+export const Terminal = ({ output = ``, className }: Props): JSX.Element => (
+  <div className={mergeClasses(`px-px` , className)}>
+    <pre className="whitespace-pre-wrap">{output}</pre>
     <Prompt dir="moo" />
   </div>
 );
