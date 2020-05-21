@@ -29,10 +29,10 @@ const defaultFace: Face = {
   tongue: appearances[0].tongue
 };
 
-export type { Mode };
+export type { Mode, Face };
 
 export const getMode = ({ eyes, tongue }: Face): Mode | `u` | `c` => {
-  tongue = tongue?.trim() || ``;
+  tongue = tongue.trim();
 
   for (const face of appearances) {
     if ((eyes === face.eyes) && (tongue === face.tongue)) {
@@ -53,9 +53,9 @@ export const getFace = (mode: Mode): Face => {
   return defaultFace;
 };
 
-export const modes = [
+export const modes: readonly JSX.Element[] = [
   <option key="c" value="c" hidden disabled>Custom</option>,
   ...appearances.map(({ id, name }) =>
-    <option key={id} value={id}>{name[0].toUpperCase() + name.slice(1)}</option>
+    <option key={id} value={id}>{name[0].toUpperCase()}{name.slice(1)}</option>
   )
 ];

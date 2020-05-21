@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
-import { ClassName, dummy } from "../shared";
+import { ClassName } from "../shared";
 
 interface Props extends ClassName {
-  readonly id?: string;
+  readonly id: string;
   readonly exclusive?: boolean;
   readonly checked?: boolean;
-  readonly onChange?: () => void;
+  readonly onChange: () => void;
 }
 
-export const Checkable = ({ id, exclusive, checked, className, onChange = dummy }: Props): JSX.Element => {
+export const Checkable = ({ id, exclusive, checked, className, onChange }: Props): JSX.Element => {
   const input = useRef<HTMLInputElement>(null);
 
   const { type, open, close } = exclusive ?

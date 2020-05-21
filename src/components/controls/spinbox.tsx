@@ -1,20 +1,20 @@
 import React from "react";
-import { ClassName, mergeClasses, dummy } from "../shared";
+import { ClassName, mergeClasses } from "../shared";
 
 interface Props extends ClassName {
-  value?: number;
-  onChange?: (value: number) => void;
-  disabled?: boolean;
+  value: number;
+  onChange: (value: number) => void;
+  disabled: boolean;
 }
 
-export const Spinbox = ({ value, className = ``, disabled, onChange: setValue = dummy }: Props): JSX.Element => {
+export const Spinbox = ({ value, className = ``, disabled, onChange: setValue }: Props): JSX.Element => {
   const stepUp = (): void => {
-    setValue(value ? value + 1 : 1);
-  }
+    setValue(value + 1);
+  };
 
   const stepDown = (): void => {
-    setValue(value && (value !== 0) ? value - 1 : 0);
-  }
+    setValue(value ? value - 1 : 0);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.altKey || e.ctrlKey || e.shiftKey || e.metaKey || e.key.length > 1) {

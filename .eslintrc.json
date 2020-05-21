@@ -1,21 +1,26 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "extends": [
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "plugins": [ "@typescript-eslint" ],
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
   "env": {
     "browser": true,
     "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
   },
   "rules": {
     "quotes": "off",
     "indent": [ "error", 2, { "SwitchCase": 1 } ],
     "@typescript-eslint/quotes": [ 2, "backtick", { "avoidEscape": true } ]
-  }
+  },
+  "overrides": [
+    {
+      "files": [ "*.tsx" ],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "plugins": [ "@typescript-eslint" ]
+    }
+  ]
 }

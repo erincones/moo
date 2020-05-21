@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Checkable } from "./checkable";
 import { Spinbox } from "./spinbox";
-import { Mode, getMode, getFace, modes } from "./modes";
-import { ClassName, mergeClasses, dummy } from "../shared";
+import { Cow, Action, Mode, cows, modes, getMode, getFace, cowsay, cowthink } from "../cowsay";
+import { ClassName, mergeClasses } from "../shared";
 
 interface Props extends ClassName {
   readonly onChange: (value: string) => void;
 };
 
-type action = `say` | `think`;
+const clamp = (input: HTMLInputElement): string => {
+  if (input.value.length < 3) {
+    return input.value;
+  }
 
+  if ((input.selectionStart || 0) > 2) {
+    return input.value.slice(input.value.length - 2, input.value.length);
+  }
+  else {
+    return input.value.slice(0, 2);
+  }
+};
 
-
-export const Controls = ({ className = ``, onChange: changeValue = dummy }: Props): JSX.Element => {
+export const Controls = ({ className = ``, onChange: changeValue }: Props): JSX.Element => {
   const [ message, setMessage ] = useState(`moo!`);
-  const [ cow, setCow ] = useState<string>();
-  const [ action, setAction ] = useState<action>(`say`);
+  const [ cow, setCow ] = useState<Cow>(`default`);
+  const [ action, setAction ] = useState<Action>(`say`);
   const [ mode, setMode ] = useState<Mode | `u` | `c`>();
   const [ eyes, setEyes ] = useState(`oo`);
   const [ tongue, setTongue ] = useState(``);
@@ -23,7 +32,14 @@ export const Controls = ({ className = ``, onChange: changeValue = dummy }: Prop
   const [ noWrap, setNoWrap ] = useState(false);
 
   useEffect(() => {
-    changeValue(JSON.stringify({ message, cow, action, mode, eyes, tongue, wrap, noWrap }, null, 2));
+    const options = {
+      cow,
+      eyes: (cow === `small`) && !eyes.length ? `..` : eyes.padEnd(2),
+      tongue: tongue.padEnd(2),
+      wrap: (noWrap ? false : wrap) as number | false
+    };
+
+    changeValue(action === `say` ? cowsay(message, options) : cowthink(message, options));
   });
 
   const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
@@ -31,7 +47,7 @@ export const Controls = ({ className = ``, onChange: changeValue = dummy }: Prop
   }
 
   const handleCow = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setCow(e.target.value);
+    setCow(e.target.value as Cow);
   };
 
   const handleSay = (): void => {
@@ -50,14 +66,16 @@ export const Controls = ({ className = ``, onChange: changeValue = dummy }: Prop
   };
 
   const handleEyes = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const mode = getMode({ eyes: e.target.value, tongue });
-    setEyes(e.target.value);
+    const eyes = clamp(e.target);
+    const mode = getMode({ eyes, tongue });
+    setEyes(eyes);
     setMode(mode);
   };
 
   const handleTongue = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const mode = getMode({ eyes, tongue: e.target.value });
-    setTongue(e.target.value);
+    const tongue = clamp(e.target);
+    const mode = getMode({ eyes, tongue });
+    setTongue(tongue);
     setMode(mode);
   };
 
@@ -71,9 +89,7 @@ export const Controls = ({ className = ``, onChange: changeValue = dummy }: Prop
       <fieldset className="col-span-5">
         <legend>Cow</legend>
         <select value={cow} className="w-full arrows-white focus:arrows-black focus:bg-white focus:text-black focus:outline-none focus:no-focusring" onChange={handleCow}>
-          <option>Default</option>
-          <option>Turtle</option>
-          <option>Dragon</option>
+          {cows}
         </select>
       </fieldset>
       <fieldset className="col-span-7">
