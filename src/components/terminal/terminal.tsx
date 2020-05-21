@@ -3,12 +3,12 @@ import { Prompt } from "./prompt";
 import { ClassName, mergeClasses } from "../shared";
 
 interface Props extends ClassName {
-  readonly output?: string;
+  readonly children?: React.ReactNode;
 }
 
-export const Terminal = ({ output = ``, className }: Props): JSX.Element => (
+export const Terminal = ({ className, children }: Props): JSX.Element => (
   <div className={mergeClasses(`overflow-x-auto max-w-full px-px` , className)}>
-    <pre>{output}</pre>
+    {children}
     <Prompt dir="moo" />
   </div>
 );
