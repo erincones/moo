@@ -14,14 +14,36 @@ const limits = {
   think: [ `( `, ` )`, `( `, ` )`, `( `, ` )`, `( `, ` )` ]
 };
 
+const lineBreaks = /\r\n|[\n\r\f\u2028\u2029\u0085]/g;
+
 const split = (message: string, wrap: Wrap): string[] => {
-  return message.split(`\n`);
+  if ((wrap === 0) || (wrap === 1)) {
+    return [ `0` ];
+  }
+
+  message = message.replace(/^\uFEFF/g, ``).replace(/\t/g, `        `);
+  if (wrap === false) {
+    return message.split(lineBreaks);
+  }
+
+  const selector = `([^\n]{1,${wrap - 1}})`;
+  const splitter = RegExp(`${selector}$|${selector}\\s|${selector}`, `g`);
+
+  const lines = message.split(lineBreaks).map(line => (
+    line.replace(/^\s+|\s+$/g, ``).replace(/\s+|^$/g, ` `)
+  )).join(` `).replace(/\s+$/, ``).replace(/\s{2,}/g, `\n\n`).replace(splitter, `$1$2$3\n`).split(`\n`);
+
+  if ((lines.length > 1) && (lines[lines.length - 1] === ``)) {
+    lines.pop();
+  }
+
+  return lines;
 };
 
 const buildTextBox = (action: Action, message: string, wrap: Wrap): string => {
   const lines = split(message, wrap);
   const width = Math.max(1, ...lines.map(line => line.length));
-  const spaner = new Array(message.length ? width + 3 : 2);
+  const spaner = Array((lines.length === 1) && (lines[0] === ``) ? 2 : width + 3);
   const limit = limits[action];
   const last = lines.length - 1;
 

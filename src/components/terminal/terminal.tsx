@@ -7,8 +7,8 @@ interface Props extends ClassName {
 }
 
 export const Terminal = ({ output = ``, className }: Props): JSX.Element => (
-  <div className={mergeClasses(`px-px` , className)}>
-    <pre className="whitespace-pre-wrap">{output}</pre>
+  <div className={mergeClasses(`overflow-x-auto max-w-full px-px` , className)}>
+    <pre>{output}</pre>
     <Prompt dir="moo" />
   </div>
 );

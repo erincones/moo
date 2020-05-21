@@ -8,8 +8,8 @@ const Home = (): JSX.Element => {
   const handleCow = (value: string): void => setCow(value);
 
   return (
-    <div className="grid grid-flow-row md:grid-flow-col md:grid-cols-12">
-      <Controls className="md:col-start-8 md:col-span-5" onChange={handleCow} />
+    <div className="scrolling-touch grid grid-flow-row md:grid-flow-col md:grid-cols-12">
+      <Controls className="md:col-start-8 md:col-span-5 md:h-screen" onChange={handleCow} />
       <Terminal output={cow} className="md:col-start-1 md:col-span-7" />
     </div>
   );
