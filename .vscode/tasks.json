@@ -15,6 +15,12 @@
     },
     {
       "type": "npm",
+      "script": "deploy",
+      "label": "npm: deploy",
+      "detail": "Deploy static site to GitHub pages"
+    },
+    {
+      "type": "npm",
       "script": "develop",
       "label": "npm: develop",
       "detail": "Start the development server"

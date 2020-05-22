@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "develop": "gatsby develop",
     "start": "npm run develop",
     "serve": "gatsby serve",
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^2.32.0",
     "@typescript-eslint/parser": "^2.32.0",
     "eslint": "^7.0.0",
+    "gh-pages": "^2.2.0",
     "postcss-import": "^12.0.1",
     "postcss-preset-env": "^6.7.0",
     "stylelint-config-recommended": "^3.0.0",
