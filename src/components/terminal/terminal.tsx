@@ -13,6 +13,7 @@ interface History {
 }
 
 const history: History[] = [];
+let historyIndex = 0;
 
 export const Terminal = ({ className, children }: Props): JSX.Element => {
   const input = useRef<HTMLSpanElement>(null);
@@ -30,6 +31,49 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
     input.current?.focus();
   };
 
+  const handleKey = (e: React.KeyboardEvent): void => {
+    if (!input.current) {
+      return;
+    }
+
+    switch (e.keyCode) {
+      case 38:
+        if (historyIndex > history.length) {
+          historyIndex = history.length;
+        }
+
+        const current = historyIndex;
+
+        do {
+          historyIndex--;
+        }
+        while ((historyIndex >= 0) && (history[historyIndex].root !== root));
+
+        if (historyIndex < 0) {
+          historyIndex = current;
+        }
+        break;
+
+      case 40:
+        if (historyIndex < -1) {
+          historyIndex = -1;
+        }
+
+        do {
+          historyIndex++;
+        } while ((historyIndex < history.length) && (history[historyIndex].root !== root));
+        break;
+
+      default: return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const remember = (historyIndex >= 0) && (historyIndex < history.length);
+    input.current.innerHTML = `${remember ? history[historyIndex].command : ``}<br>`
+  };
+
   const handleInput = (): void => {
     if (!input.current || !/(?:\n|<br>).+$/.test(input.current.innerHTML)) {
       return;
@@ -38,6 +82,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
     const text = input.current.innerHTML.replace(/(?:\n|<br>)/g, ``);
     if (text.trim()) {
       history.push({ command: text, root });
+      historyIndex = history.length;
     }
 
     if (/^\s*(?:sudo\s+)*clear(?:\s+.*)?$/.test(text)) {
@@ -144,7 +189,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
       <pre className="block flex-grow w-full" onPaste={handlePaste} onClick={handleFocus} onFocus={handleFocus}>
         {output}
         <Prompt root={root} dir="moo" />
-        <span ref={input} autoCapitalize="off" spellCheck={false} contentEditable suppressContentEditableWarning className="whitespace-pre outline-none" onInput={handleInput}>
+        <span ref={input} autoCapitalize="off" spellCheck={false} contentEditable suppressContentEditableWarning className="whitespace-pre outline-none" onKeyDown={handleKey} onInput={handleInput}>
           <br />
         </span>
       </pre>
