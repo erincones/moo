@@ -28,7 +28,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
       return;
     }
 
-    const text = input.current.innerHTML.replace(/<br>/g, ``);
+    const text = input.current.innerHTML.replace(/(?:\n|<br>)/g, ``);
     if (/^\s*(?:sudo\s+)*clear(?:\s+.*)?$/.test(text)) {
       setOutput([]);
       input.current.innerHTML = `<br>`;
@@ -77,18 +77,19 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
         <Output key={key + 2}>
           Moo! Developed by Erick Rincones
           <br />
-          under the MIT license, {date.getFullYear()}
+          under the MIT license, {date.getFullYear()}.
           <br />
           <br />
-          Available commandss
+          Type `help&apos; to see this list.
           <br />
-          &nbsp;clear
           <br />
-          &nbsp;echo [STRING]
+          clear
           <br />
-          &nbsp;ls
+          echo [STRING]
           <br />
-          &nbsp;sudo [COMMAND]
+          ls
+          <br />
+          sudo [COMMAND]
         </Output>
       );
     }
@@ -114,12 +115,12 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
   }, []);
 
   return (
-    <div className={mergeClasses(`flex flex-col overflow-x-auto max-w-full px-px` , className)}>
+    <div className={mergeClasses(`flex flex-col overflow-x-auto max-w-full px-px`, className)}>
       {children}
-      <pre contentEditable suppressContentEditableWarning className="block flex-grow w-full outline-none" onPaste={handlePaste} onClick={handleFocus} onFocus={handleFocus} onInput={handleInput}>
+      <pre className="block flex-grow w-full" onPaste={handlePaste} onClick={handleFocus}>
         {output}
         <Prompt root={root} dir="moo" />
-        <span ref={input} spellCheck={false} className="whitespace-pre">
+        <span ref={input} autoCapitalize="off" spellCheck={false} contentEditable suppressContentEditableWarning className="whitespace-pre outline-none" onFocus={handleFocus} onInput={handleInput}>
           <br />
         </span>
       </pre>

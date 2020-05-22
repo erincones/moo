@@ -115,11 +115,11 @@ export const Controls = ({ className = ``, onChange: changeValue }: Props): JSX.
         </fieldset>
         <fieldset className="col-span-3">
           <legend>Eyes</legend>
-          <input type="text" value={eyes} className="w-full" onChange={handleEyes} />
+          <input type="text" value={eyes} autoCapitalize="off" spellCheck={false} className="outline-none w-full" onChange={handleEyes} />
         </fieldset>
         <fieldset className="col-span-4">
           <legend>Tongue</legend>
-          <input type="text" value={tongue} className="w-full" onChange={handleTongue} />
+          <input type="text" value={tongue} autoCapitalize="off" spellCheck={false} className="outline-none w-full" onChange={handleTongue} />
         </fieldset>
         {/* Third row */}
         <fieldset className="col-span-12">
@@ -138,7 +138,7 @@ export const Controls = ({ className = ``, onChange: changeValue }: Props): JSX.
       {/* Fourth row */}
       <fieldset className="md:flex-grow">
         <legend>Message</legend>
-        <textarea value={message} spellCheck={false} className="bg-black w-full h-full min-h-2 resize-y md:min-h-full" onChange={handleMessage} />
+        <textarea value={message} autoCapitalize="off" spellCheck={false} className="bg-black outline-none w-full h-full min-h-2 resize-y md:min-h-full" onChange={handleMessage} />
       </fieldset>
     </div>
   );
