@@ -63,11 +63,14 @@ $down-arrow-gray: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 // Text colors selections
+.text-red-light::selection {
+  @apply bg-red-light;
+}
 .text-green-light::selection {
   @apply bg-green-light;
 }
-.text-red-light::selection {
-  @apply bg-red-light;
+.text-blue-light::selection {
+  @apply bg-blue-light;
 }
 .text-cyan-light::selection {
   @apply bg-cyan-light;

@@ -2,7 +2,7 @@
   "name": "moo",
   "author": "Erick Rincones",
   "private": true,
-  "description": "Create custom messages with cowsay and figlet",
+  "description": "Create custom messages with cowsay",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {

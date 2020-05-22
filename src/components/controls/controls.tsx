@@ -31,17 +31,6 @@ export const Controls = ({ className = ``, onChange: changeValue }: Props): JSX.
   const [ wrap, setWrap ] = useState(30);
   const [ noWrap, setNoWrap ] = useState(false);
 
-  useEffect(() => {
-    const options = {
-      cow,
-      eyes: (cow === `small`) && !eyes.length ? `..` : eyes.padEnd(2),
-      tongue: tongue.padEnd(2),
-      wrap: (noWrap ? false : wrap) as number | false
-    };
-
-    changeValue(action === `say` ? cowsay(message, options) : cowthink(message, options));
-  });
-
   const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setMessage(e.target.value);
   }
@@ -81,7 +70,18 @@ export const Controls = ({ className = ``, onChange: changeValue }: Props): JSX.
 
   const handleNoWrap = (): void => {
     setNoWrap(!noWrap);
-  }
+  };
+
+  useEffect(() => {
+    const options = {
+      cow,
+      eyes: (cow === `small`) && !eyes.length ? `..` : eyes.padEnd(2),
+      tongue: tongue.padEnd(2),
+      wrap: (noWrap ? false : wrap) as number | false
+    };
+
+    changeValue(action === `say` ? cowsay(message, options) : cowthink(message, options));
+  });
 
   return (
     <div className={mergeClasses(`flex flex-col p-2`, className)}>

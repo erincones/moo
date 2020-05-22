@@ -7,19 +7,38 @@ interface Props {
   root?: boolean;
 }
 
-export const Prompt = ({ user = `user`, host = `localhost`, dir = `~`, root = false }: Props): JSX.Element => {
-  return root ? (
-    <span className="font-bold">
-      <span className="text-red-light">[{host}</span>
-      <span className="text-cyan-light">&nbsp;{dir}</span>
-      <span className="text-red-light">]#</span>
-      &nbsp;
-    </span>
-  ) : (
-    <span className="font-bold">
-      <span className="text-green-light">[{user}@{host}</span>
-      &nbsp;{dir}
-      <span className="text-green-light">]$</span>
+interface Details {
+  id: string;
+  dir: string;
+  prompt: string;
+  dirClass: string;
+  promptClass: string;
+}
+
+const buildPrompt = ({ user = `user`, host = `localhost`, dir = `~`, root }: Props): Details => {
+  return root ? {
+    id: `[${host}`,
+    dir: `\u00A0${dir}`,
+    prompt: `]#`,
+    dirClass: `text-cyan-light font-bold`,
+    promptClass: `text-red-light font-bold`
+  } : {
+    id: `[${user}@${host}`,
+    dir: `\u00A0${dir}`,
+    prompt: `]$`,
+    dirClass: `font-bold`,
+    promptClass: `text-green-light font-bold`
+  };
+}
+
+export const Prompt = (props: Props): JSX.Element => {
+  const { id, dir, prompt, dirClass, promptClass } = buildPrompt(props);
+
+  return (
+    <span contentEditable={false}>
+      <span className={promptClass}>{id}</span>
+      <span className={dirClass}>{dir}</span>
+      <span className={promptClass}>{prompt}</span>
       &nbsp;
     </span>
   );

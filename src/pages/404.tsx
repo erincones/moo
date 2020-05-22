@@ -15,7 +15,7 @@ const HTTP404 = (): JSX.Element => {
     <>
       <pre>{output}</pre>
       <Prompt dir="404" />
-      <Link to="/" replace className="text-white">back to home</Link>
+      <Link to="/" replace className="text-white underline"> back to home</Link>
     </>
   );
 };
