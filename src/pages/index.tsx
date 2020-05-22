@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Controls } from "../components/controls";
 import { Terminal } from "../components/terminal";
+import { Metadata } from "../components/metadata";
 import { Position } from "../components/shared";
 
 const mouse: Position = { x: NaN, y: NaN };
@@ -34,12 +35,15 @@ const Home = (): JSX.Element => {
   const handleCow = (value: string): void => setCow(value);
 
   return (
-    <div className="scrolling-touch grid grid-flow-row md:grid-flow-col md:grid-cols-12 md:h-screen">
-      <Controls className="md:col-start-8 md:col-span-5 md:h-full" onChange={handleCow} />
-      <Terminal className="cursor-text md:col-start-1 md:col-span-7">
-        <pre onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>{cow}</pre>
-      </Terminal>
-    </div>
+    <>
+      <Metadata />
+      <div className="scrolling-touch grid grid-flow-row md:grid-flow-col md:grid-cols-12 md:h-screen">
+        <Controls className="md:col-start-8 md:col-span-5 md:h-full" onChange={handleCow} />
+        <Terminal className="cursor-text md:col-start-1 md:col-span-7">
+          <pre onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>{cow}</pre>
+        </Terminal>
+      </div>
+    </>
   );
 };
 

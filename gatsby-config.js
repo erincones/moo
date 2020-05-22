@@ -5,7 +5,23 @@
  */
 
 module.exports = {
+  pathPrefix: `/moo`,
   plugins: [
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `moo!`,
+        short_name: `moo`,
+        description: `Another web version of cowsay`,
+        lang: `en`,
+        start_url: `/`,
+        display: `standalone`,
+        background_color: `#000000`,
+        theme_color: `#000000`,
+        icon: `src/images/icon.svg`
+      },
+    },
     {
       resolve: `gatsby-plugin-sass`,
       options: {

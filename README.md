@@ -1,6 +1,6 @@
 # Moo!
 
-Create custom messages with cowsay.
+Another web version of cowsay.
 
 ```
  ______
