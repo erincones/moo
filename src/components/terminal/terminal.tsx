@@ -133,13 +133,11 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
           Type `help&apos; to see this list.
           <br />
           <br />
-          clear
+          clear            history [-c]
           <br />
-          echo [STRING]
+          echo [STRING]    ls
           <br />
-          ls
-          <br />
-          sudo [COMMAND]
+          help             sudo [COMMAND]
         </Output>
       );
     }

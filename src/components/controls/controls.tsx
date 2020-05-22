@@ -138,7 +138,7 @@ export const Controls = ({ className = ``, onChange: changeValue }: Props): JSX.
       {/* Fourth row */}
       <fieldset className="md:flex-grow">
         <legend>Message</legend>
-        <textarea value={message} autoCapitalize="off" spellCheck={false} className="bg-black outline-none w-full h-full min-h-2 resize-y md:min-h-full" onChange={handleMessage} />
+        <textarea value={message} autoCapitalize="off" spellCheck={false} className="bg-black outline-none w-full h-full min-h-2 resize-y md:min-h-full md:resize-none" onChange={handleMessage} />
       </fieldset>
     </div>
   );
