@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Prompt } from "./prompt";
 import { Output } from "./output";
-import { ClassName, mergeClasses } from "../shared";
+import { Position, ClassName, mergeClasses } from "../shared";
 
 interface Props extends ClassName {
   readonly children?: React.ReactNode;
@@ -12,30 +12,25 @@ interface History {
   root: boolean;
 }
 
-interface Position {
-  x: number;
-  y: number;
-}
-
 const history: History[] = [];
 let historyIndex = 0;
 
 const mouse: Position = { x: NaN, y: NaN };
 
+const handlePaste = (e: React.SyntheticEvent): void => {
+  e.preventDefault();
+  e.stopPropagation();
+};
+
+const handleMouseDown = (e: React.MouseEvent): void => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+};
+
 export const Terminal = ({ className, children }: Props): JSX.Element => {
   const input = useRef<HTMLSpanElement>(null);
   const [ root, setRoot ] = useState(false);
   const [ output, setOutput ] = useState<JSX.Element[]>([]);
-
-  const handlePaste = (e: React.SyntheticEvent): void => {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
-  const handleMouseDown = (e: React.MouseEvent): void => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  };
 
   const handleMouseUp = (e: React.MouseEvent): void => {
     if ((mouse.x !== e.clientX) || (mouse.y !== e.clientY)) {
@@ -47,11 +42,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
     input.current?.focus();
   };
 
-  const handleKey = (e: React.KeyboardEvent): void => {
-    if (!input.current) {
-      return;
-    }
-
+  const handleKey = (e: React.KeyboardEvent<HTMLSpanElement>): void => {
     switch (e.keyCode) {
       case 38:
         if (historyIndex > history.length) {
@@ -87,15 +78,15 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
     e.stopPropagation();
 
     const remember = (historyIndex >= 0) && (historyIndex < history.length);
-    input.current.innerHTML = `${remember ? history[historyIndex].command : ``}<br>`
+    e.currentTarget.innerHTML = `${remember ? history[historyIndex].command : ``}<br>`;
   };
 
-  const handleInput = (): void => {
-    if (!input.current || !/(?:\n|<br>).+$/.test(input.current.innerHTML)) {
+  const handleInput = (e: React.SyntheticEvent<HTMLSpanElement>): void => {
+    if (!/(?:\n|<br>).+$/.test(e.currentTarget.innerHTML)) {
       return;
     }
 
-    const text = input.current.innerHTML.replace(/(?:\n|<br>)/g, ``);
+    const text = e.currentTarget.innerHTML.replace(/(?:\n|<br>)/g, ``);
     if (text.trim()) {
       history.push({ command: text, root });
       historyIndex = history.length;
@@ -103,7 +94,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
 
     if (/^\s*(?:sudo\s+)*clear(?:\s+.*)?$/.test(text)) {
       setOutput([]);
-      input.current.innerHTML = `<br>`;
+      e.currentTarget.innerHTML = `<br>`;
       return;
     }
 
@@ -187,7 +178,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
     }
 
     setOutput([ ...output, ...nodes ]);
-    input.current.innerHTML = `<br>`;
+    e.currentTarget.innerHTML = `<br>`;
   };
 
   useEffect(() => {
@@ -195,7 +186,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
 
     if (input.current) {
       input.current.innerHTML = `help<br><br>`;
-      handleInput();
+      input.current.dispatchEvent(new InputEvent(`input`, { bubbles: true }));
     }
   }, []);
 
