@@ -12,8 +12,15 @@ interface History {
   root: boolean;
 }
 
+interface Position {
+  x: number;
+  y: number;
+}
+
 const history: History[] = [];
 let historyIndex = 0;
+
+const mouse: Position = { x: NaN, y: NaN };
 
 export const Terminal = ({ className, children }: Props): JSX.Element => {
   const input = useRef<HTMLSpanElement>(null);
@@ -25,7 +32,16 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
     e.stopPropagation();
   }
 
-  const handleFocus = (e: React.SyntheticEvent): void => {
+  const handleMouseDown = (e: React.MouseEvent): void => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent): void => {
+    if ((mouse.x !== e.clientX) || (mouse.y !== e.clientY)) {
+      return;
+    }
+
     e.preventDefault();
     e.stopPropagation();
     input.current?.focus();
@@ -186,7 +202,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
   return (
     <div className={mergeClasses(`flex flex-col overflow-x-auto max-w-full px-px`, className)}>
       {children}
-      <pre className="block flex-grow w-full" onPaste={handlePaste} onClick={handleFocus} onFocus={handleFocus}>
+      <pre className="block flex-grow w-full" onPaste={handlePaste} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
         {output}
         <Prompt root={root} dir="moo" />
         <span ref={input} autoCapitalize="off" spellCheck={false} contentEditable suppressContentEditableWarning className="whitespace-pre outline-none" onKeyDown={handleKey} onInput={handleInput}>
