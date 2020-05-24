@@ -196,7 +196,7 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
   }, []);
 
   return (
-    <div className={mergeClasses(`flex flex-col overflow-x-hidden max-w-full px-px`, className)}>
+    <div className={mergeClasses(`flex flex-col max-w-full px-px`, className)}>
       {children}
       <pre className="block whitespace-pre-wrap break-all flex-grow" onPaste={handlePaste} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
         {output}
