@@ -40,7 +40,7 @@ const Home = (): JSX.Element => {
       <div className="scrolling-touch grid grid-flow-row md:grid-flow-col md:grid-cols-12 md:h-screen">
         <Controls className="md:col-start-8 md:col-span-5 md:h-full" onChange={handleCow} />
         <Terminal className="cursor-text md:col-start-1 md:col-span-7">
-          <pre onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>{cow}</pre>
+          <pre className="overflow-x-auto" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>{cow}</pre>
         </Terminal>
       </div>
     </>

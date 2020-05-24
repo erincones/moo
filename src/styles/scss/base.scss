@@ -45,6 +45,12 @@ html {
   @include selection;
 }
 
+// List item bullet
+li::before {
+  content: " ";
+  white-space: pre;
+}
+
 // Fieldsets
 fieldset {
   @apply border;

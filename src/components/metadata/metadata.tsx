@@ -33,7 +33,7 @@ export const Metadata = (): JSX.Element => (
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:creator" content="@erickrincones" />
+    <meta name="twitter:creator" content="@ErickRincones" />
     <meta name="twitter:image" content={image} />
 
     <meta name="google-site-verification" content="RScugNg5R9w-kAFDk8kWA0WqSmY9_UXU4fe1Y9KfjJs" />

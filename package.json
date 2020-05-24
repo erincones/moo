@@ -1,6 +1,6 @@
 {
   "name": "moo",
-  "author": "Erick Rincones",
+  "author": "Erick Rincones <erick.rincones@ciens.ucv.ve>",
   "private": true,
   "description": "Another web version of cowsay",
   "version": "0.1.0",
@@ -40,11 +40,12 @@
     "tailwindcss": "^1.4.6",
     "typescript": "^3.8.3"
   },
+  "homepage": "https://erincones.github.io/moo/",
   "repository": {
     "type": "git",
     "url": "https://github.com/erincones/moo"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/moo/issues"
+    "url": "https://github.com/erincones/moo/issues"
   }
 }

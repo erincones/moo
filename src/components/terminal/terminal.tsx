@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Prompt } from "./prompt";
-import { Output } from "./output";
 import { Position, ClassName, mergeClasses } from "../shared";
 
 interface Props extends ClassName {
@@ -100,14 +99,13 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
 
     const key = output.length;
     const nodes: JSX.Element[] = [
-      <Prompt key={key} root={root} dir="moo" />,
-      <Output key={key + 1}>{text}</Output>
+      <Prompt key={key} root={root} dir="moo" output={text} />
     ];
 
     let match: RegExpMatchArray | null = null;
     if ((match = text.match(/^\s*(?:sudo\s+)*echo(\s+.+)?$/))) {
       if (match[1]) {
-        nodes.push(<Output key={key + 2}>{match[1].trim()}</Output>);
+        nodes.push(<span key={key + 1}>{match[1].trim()}{`\n`}</span>);
       }
     }
     else if (/^(?:sudo\s+)*exit(?:\s+.*)?$/.test(text)) {
@@ -115,30 +113,30 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
 
       if (root) {
         nodes.push(
-          <Output key={key + 2}>
-            exit
-          </Output>
+          <span key={key + 1}>
+            exit{`\n`}
+          </span>
         );
       }
     }
     else if (/^(?:sudo\s+)*help(?:\s+.*)?$/.test(text)) {
-      const date = new Date();
       nodes.push(
-        <Output key={key + 2}>
-          Moo! Developed by Erick Rincones
-          <br />
-          under the MIT license, {date.getFullYear()}.
-          <br />
-          <br />
-          Type `help&apos; to see this list.
-          <br />
-          <br />
-          clear            history [-c]
-          <br />
-          echo [STRING]    ls
-          <br />
-          help             sudo [COMMAND]
-        </Output>
+        <span key={key + 1} className="break-normal">
+          Moo! Developed by Erick Rincones.{`\n`}
+          Special thanks to Aury Rincones.{`\n`}
+          Licensed under the <a href="https://github.com/erincones/moo/blob/master/LICENSE" className="underline">MIT license</a>.{`\n`}
+          {`\n`}
+          These shell commands are defined internally. Type `help&apos; to see this list.{`\n`}
+          {`\n`}
+          <ul className="cols-2 gap-0 max-w-content">
+            <li className="truncate">clear</li>
+            <li className="truncate">echo [STRING]</li>
+            <li className="truncate">help</li>
+            <li className="truncate">history [-c]</li>
+            <li className="truncate">ls</li>
+            <li className="truncate">sudo [COMMAND]</li>
+          </ul>
+        </span>
       );
     }
     else if ((match = text.match(/^\s*(?:sudo\s+)*history(\s+-c)?(?:\s+.+)?$/))) {
@@ -148,20 +146,26 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
         )));
       }
       else {
+        const list: string[] = [];
         history.filter(({ root: su }) => (
           su === root
-        )).forEach(({ command }, i) => {
-          nodes.push(<Output key={key + i + 2}>{command}</Output>);
+        )).forEach(({ command }) => {
+          list.push(command);
         });
+
+        if (list) {
+          nodes.push(<span key={key + 1}>{list.join(`\n`)}{`\n`}</span>);
+        }
       }
     }
     else if (/^\s*(?:sudo\s+)*ls(?:\s+.*)?$/.test(text)) {
       nodes.push(
-        <Output key={key + 2}>
+        <span key={key + 1}>
           <span className="font-bold text-blue-light">.</span>
           &nbsp;&nbsp;
           <span className="font-bold text-blue-light">..</span>
-        </Output>
+          {`\n`}
+        </span>
       );
     }
     else if (/^\s*(sudo\s+)+su(?:\s+.*)?$/.test(text)) {
@@ -169,9 +173,9 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
     }
     else if ((match = text.match(/^\s*(?:sudo\s+)*((?!sudo\b)\S+)(?:\s+.*)?$/))) {
       nodes.push(
-        <Output key={key + 2}>
-          moo!: {match[1]}: command not found
-        </Output>
+        <span key={key + 1}>
+          moo!: {match[1]}: command not found{`\n`}
+        </span>
       );
     }
 
@@ -189,12 +193,12 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
   }, []);
 
   return (
-    <div className={mergeClasses(`flex flex-col overflow-x-auto max-w-full px-px`, className)}>
+    <div className={mergeClasses(`flex flex-col overflow-x-hidden max-w-full px-px`, className)}>
       {children}
-      <pre className="block flex-grow w-full" onPaste={handlePaste} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+      <pre className="block whitespace-pre-wrap break-all flex-grow" onPaste={handlePaste} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
         {output}
         <Prompt root={root} dir="moo" />
-        <span ref={input} autoCapitalize="off" spellCheck={false} contentEditable suppressContentEditableWarning className="whitespace-pre outline-none" onKeyDown={handleKey} onInput={handleInput}>
+        <span ref={input} autoCapitalize="off" spellCheck={false} contentEditable suppressContentEditableWarning className="outline-none" onKeyDown={handleKey} onInput={handleInput}>
           <br />
         </span>
       </pre>
