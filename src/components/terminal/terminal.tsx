@@ -146,16 +146,19 @@ export const Terminal = ({ className, children }: Props): JSX.Element => {
         )));
       }
       else {
-        const list: string[] = [];
-        history.filter(({ root: su }) => (
+        let pad: number;
+        const list = history.filter(({ root: su }) => (
           su === root
-        )).forEach(({ command }) => {
-          list.push(command);
+        )).map(({ command }, i, array) => {
+          if (i === 0) {
+            pad = String(array.length).length;
+          }
+
+          return `  ${String(i + 1).padStart(pad)}  ${command}`;
         });
 
-        if (list) {
-          nodes.push(<span key={key + 1}>{list.join(`\n`)}{`\n`}</span>);
-        }
+        list.push(``);
+        nodes.push(<span key={key + 1}>{list.join(`\n`)}</span>);
       }
     }
     else if (/^\s*(?:sudo\s+)*ls(?:\s+.*)?$/.test(text)) {
