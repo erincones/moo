@@ -32,6 +32,12 @@ export const Spinbox = ({ value, className = ``, disabled, onChange: setValue }:
   };
 
   const handleScroll = (e: React.WheelEvent<HTMLInputElement>): void => {
+    if (disabled) {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
     e.deltaY > 0 ? stepDown() : stepUp();
   }
 

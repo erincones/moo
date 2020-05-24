@@ -8,9 +8,8 @@
     "sourceType": "module"
   },
   "rules": {
-    "quotes": "off",
     "indent": [ "error", 2, { "SwitchCase": 1 } ],
-    "@typescript-eslint/quotes": [ 2, "backtick", { "avoidEscape": true } ]
+    "quotes": [ "error", "backtick", { "avoidEscape": true } ]
   },
   "overrides": [
     {
