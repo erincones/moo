@@ -7,6 +7,13 @@
 module.exports = {
   pathPrefix: `/moo`,
   plugins: [
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: `UA-109544874-2`,
+        head: true
+      }
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-manifest`,
